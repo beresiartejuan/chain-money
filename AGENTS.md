@@ -1,3 +1,14 @@
+# Project context for agents
+
+Before writing any code, read the project documentation in `/docs`. Start with [`/docs/README.md`](/docs/README.md), then check [`/docs/AGENTS.md`](/docs/AGENTS.md) for coding conventions and [`/docs/PRODUCT.md`](/docs/PRODUCT.md) for the product definition.
+
+Key reminders:
+- This app has **backend + frontend**. Server/database code lives under `src/db/` and future `src/server/`; UI lives in `src/app/`.
+- Database layer: **Drizzle ORM + Turso** (see [`/docs/DATABASE.md`](/docs/DATABASE.md)).
+- Package manager: **pnpm**. Formatter/linter: **Biome**.
+- Do not commit `.env*` files.
+- Keep `/docs` up to date when changing architecture, dependencies, conventions, or env vars.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
