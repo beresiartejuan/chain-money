@@ -31,8 +31,8 @@ chain-money
 │   │   │   └── page.tsx            # Lista de alcancías
 │   │   ├── redeem/                 # /redeem (page + redeem-form, canje de token)
 │   │   ├── layout.tsx
-│   │   ├── page.tsx                # Landing (placeholder del scaffold inicial)
-│   │   └── globals.css
+│   │   ├── page.tsx                # Landing pública (T103a, server component)
+│   │   └── globals.css             # + animación scroll-driven del libro contable
 │   ├── db/                         # Capa de datos (solo servidor)
 │   │   ├── schema.ts               # 6 tablas Drizzle + tipos inferidos
 │   │   ├── index.ts                # Cliente Drizzle (libSQL) + server-only
@@ -62,7 +62,8 @@ chain-money
 │   │   ├── transactions/           # service, sync, config + actions
 │   │   └── permissions/            # access (resolución efectiva) + assert (gate)
 │   └── proxy.ts                    # Proxy de rutas (ex middleware, Next.js 16)
-├── public/                         # Assets estáticos (svgs del scaffold)
+├── public/                         # Assets estáticos
+│   └── landing/                    # Capturas del producto para la landing
 ├── docs/                           # Documentación del proyecto
 ├── drizzle/                        # Migraciones generadas por Drizzle Kit
 ├── tasks/                          # Plan de tareas con estado por ID
@@ -94,6 +95,8 @@ chain-money
 - **`src/proxy.ts`**: gate de rutas (Next.js 16 renombró `middleware.ts` a
   `proxy.ts`). Solo chequea la presencia de la cookie `cm_session`; la
   validación real de sesión la hace el server en cada action/página.
+  `/` no redirige: sin sesión muestra la landing pública; con sesión lleva
+  a `/dashboard`.
 
 ## Permisos: módulo central
 
@@ -189,6 +192,40 @@ reales sobre `localStorage`).
 - Drizzle Kit gestiona migraciones, incluida una custom con los triggers de
   inmutabilidad de `transactions`.
 - Ver [`DATABASE.md`](./DATABASE.md) para detalles.
+
+## Tema de marca (T103b)
+
+La identidad visual de toda la app es la de la landing (derivada de
+`docs/images/hero.png`): **dark-first, una sola paleta, sin variantes
+`dark:`**. Los tokens viven en `src/app/globals.css` (`@theme` de Tailwind
+v4) y se consumen con clases semánticas:
+
+| Token | Uso |
+|---|---|
+| `bg-canvas` | Fondo de la app (`#040b09`, verdoso casi negro). |
+| `bg-surface` | Cards, paneles, modales (`#0c1512`). |
+| `bg-elevated` | Inputs y filas dentro de una card (`#14211c`). |
+| `text-fg` | Texto principal (`#f2f7f4`). |
+| `text-muted` | Texto secundario (`#9db3a9`). |
+| `text-faint` | Texto terciario / hairlines de texto (`#647870`). |
+| `border-line` | Hairline de cards/paneles (blanco al 8%). |
+| `border-rowline` | Hairline interna (blanco al 5%). |
+| `bg-accent` / `text-accent` | Acento verde-agua único (`#2ee19b`). |
+| `bg-accent-dim` | Relleno tenue del acento (badges, banners de éxito). |
+
+Reglas:
+
+- El **acento es único**: primarios yCTAs en `bg-accent` con texto negro;
+  hover con glow `shadow-[0_0_16px_rgba(46,225,155,0.35)]`.
+- **Deposit/plus = acento** (`text-accent`); rojo (`text-red-400`) solo para
+  extracciones y destructivo; ámbar (`text-amber-400`) solo para reset y su
+  badge; el toggle Depósito/Extracción usa `peer-checked:bg-accent/15`.
+- Balances y montos en **Geist Mono** (`font-mono tabular-nums`), la "voz
+  de libro contable".
+- Estados interactivos de inputs: `focus:border-accent/60` +
+  `focus:ring-accent/15`; links: `text-accent underline`.
+- No usar `zinc-*` ni `dark:` en componentes: si hace falta un color
+  nuevo, agregar un token semántico en `@theme` y usarlo.
 
 ## Convenciones de rutas
 

@@ -124,6 +124,8 @@ Las tareas son **casi atómicas**: pequeñas, acotadas y verificables de forma a
 | [T094](./T094-update-docs.md) | Actualizar `/docs` con arquitectura real | 9 · Cierre | ✅ | T087–T091 |
 | [T095](./T095-root-readme.md) | README raíz del producto | 9 · Cierre | ✅ | T094 |
 | [T096](./T096-final-verification.md) | Verificación final: lint + test + build en verde | 9 · Cierre | ✅ | T083–T095 |
+| [T103a](./T103a-landing-page.md) | Landing pública en `/` con identidad de hero.png | + · Post-plan | ✅ | T096 |
+| [T103b](./T103b-theme-app.md) | Tema de la landing aplicado a toda la app (tokens) | + · Post-plan | ✅ | T103a |
 
 ## Cómo trabajar una tarea
 
