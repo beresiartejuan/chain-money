@@ -39,7 +39,7 @@ export function BoxCard({
     <Card>
       <div className="flex flex-wrap items-center gap-2">
         <Link
-          className="text-base font-semibold text-zinc-900 underline-offset-2 hover:underline dark:text-zinc-50"
+          className="text-base font-semibold text-fg underline-offset-2 hover:text-accent hover:underline"
           href={`/dashboard/boxes/${boxId}`}
         >
           {name}
@@ -48,10 +48,10 @@ export function BoxCard({
       </div>
 
       <div className="flex items-baseline justify-between gap-2">
-        <p className="text-2xl font-semibold tabular-nums text-zinc-900 dark:text-zinc-50">
+        <p className="font-mono text-2xl font-semibold tabular-nums text-fg">
           {balance}
         </p>
-        <p className="text-sm font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+        <p className="text-sm font-medium uppercase tracking-wide text-faint">
           {currency}
         </p>
       </div>

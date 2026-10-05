@@ -3,14 +3,14 @@ import type { MouseEventHandler, ReactNode } from "react";
 /**
  * Componentes de UI reutilizables del dashboard (T069). Server-safe (sin
  * estado ni handlers propios): el caller decide qué acciones renderiza
- * dentro de la card (T071: el botón de renombrar solo para owner). Misma
- * estética Tailwind que el layout `(auth)`.
+ * dentro de la card (T071: el botón de renombrar solo para owner). Usa los
+ * tokens de marca de `globals.css` (tema verde-negro de la landing, T103b).
  */
 
-/** Card contenedora de superficie clara, compartida con los formularios. */
+/** Card contenedora de superficie elevada, compartida con los formularios. */
 export function Card({ children }: { children: ReactNode }) {
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="flex flex-col gap-3 rounded-xl border border-line bg-surface p-5">
       {children}
     </div>
   );
@@ -29,7 +29,7 @@ export function SmallButton({ children, ...buttonProps }: ButtonProps) {
   return (
     <button
       type="button"
-      className="rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+      className="rounded-md border border-line bg-elevated px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:border-accent/40 hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-60"
       {...buttonProps}
     >
       {children}
@@ -42,7 +42,7 @@ export function PrimaryButton({ children, ...buttonProps }: ButtonProps) {
   return (
     <button
       type="button"
-      className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+      className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-black transition-shadow hover:shadow-[0_0_16px_rgba(46,225,155,0.35)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-60"
       {...buttonProps}
     >
       {children}
@@ -53,7 +53,7 @@ export function PrimaryButton({ children, ...buttonProps }: ButtonProps) {
 /** Badge informativo compacto (ej. "Compartida"). */
 export function Badge({ children }: { children: ReactNode }) {
   return (
-    <span className="rounded-full border border-zinc-200 bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+    <span className="rounded-full border border-line bg-elevated px-2 py-0.5 text-xs font-medium text-muted">
       {children}
     </span>
   );

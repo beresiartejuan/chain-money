@@ -91,7 +91,7 @@ export default async function BoxDetailPage({
     // proxy y acá (mismo patrón que la page del dashboard).
     return (
       <main className="flex flex-1 items-center justify-center p-4">
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-muted">
           Tu sesión expiró. Recargá la página para iniciar sesión.
         </p>
       </main>
@@ -164,26 +164,26 @@ export default async function BoxDetailPage({
       <div className="flex flex-col gap-8">
         <header className="flex flex-col gap-3">
           <Link
-            className="text-sm font-medium text-zinc-600 underline-offset-2 hover:underline dark:text-zinc-400"
+            className="text-sm font-medium text-muted underline-offset-2 hover:text-accent hover:underline"
             href="/dashboard"
           >
             ← Volver al dashboard
           </Link>
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <h1 className="text-2xl font-semibold tracking-tight text-fg">
               {box.name}
             </h1>
             {!isOwner && (
-              <span className="rounded-full border border-zinc-200 bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+              <span className="rounded-full border border-line bg-elevated px-2 py-0.5 text-xs font-medium text-muted">
                 Compartida
               </span>
             )}
           </div>
-          <div className="flex items-baseline justify-between gap-2 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-            <p className="text-3xl font-semibold tabular-nums text-zinc-900 dark:text-zinc-50">
+          <div className="flex items-baseline justify-between gap-2 rounded-xl border border-line bg-surface p-5 shadow-[0_0_24px_rgba(46,225,155,0.06)]">
+            <p className="font-mono text-3xl font-semibold tabular-nums text-fg">
               {formattedBalance}
             </p>
-            <p className="text-sm font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+            <p className="text-sm font-medium uppercase tracking-wide text-faint">
               {box.currency}
             </p>
           </div>
@@ -212,11 +212,9 @@ export default async function BoxDetailPage({
             initialTransactions={initialTransactions}
           />
         ) : (
-          <section className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-            <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-              Historial
-            </h2>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <section className="flex flex-col gap-3 rounded-xl border border-line bg-surface p-5">
+            <h2 className="text-lg font-semibold text-fg">Historial</h2>
+            <p className="text-sm text-muted">
               No tenés permiso para ver el historial de esta alcancía.
             </p>
           </section>

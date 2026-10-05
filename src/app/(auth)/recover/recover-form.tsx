@@ -107,14 +107,12 @@ export function RecoverForm() {
 
   return (
     <form
-      className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+      className="flex flex-col gap-4 rounded-xl border border-line bg-surface p-6"
       action={handleSubmit}
     >
       <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-          Recuperar cuenta
-        </h2>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <h2 className="text-lg font-semibold text-fg">Recuperar cuenta</h2>
+        <p className="text-sm text-muted">
           Usá tu frase de recuperación para setear una contraseña nueva.
         </p>
       </div>
@@ -142,9 +140,7 @@ export function RecoverForm() {
           placeholder="palabra-palabra-… (12 palabras)"
           error={errors.fieldErrors.phrase}
         />
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          {PHRASE_HINT}
-        </p>
+        <p className="text-xs text-faint">{PHRASE_HINT}</p>
       </div>
 
       <div className="relative flex flex-col gap-1.5">
@@ -160,7 +156,7 @@ export function RecoverForm() {
         <button
           type="button"
           onClick={() => setShowPassword((value) => !value)}
-          className="absolute right-2 top-8 text-sm font-medium text-zinc-600 underline underline-offset-2 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+          className="absolute right-2 top-8 text-sm font-medium text-muted underline underline-offset-2 hover:text-fg"
         >
           {showPassword ? "Ocultar" : "Mostrar"}
         </button>
@@ -170,11 +166,11 @@ export function RecoverForm() {
         Recuperar cuenta
       </SubmitButton>
 
-      <p className="text-center text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-center text-sm text-muted">
         ¿Recordaste la contraseña?{" "}
         <a
           href="/login"
-          className="font-medium text-zinc-900 underline underline-offset-2 dark:text-zinc-100"
+          className="font-medium text-accent underline underline-offset-2 hover:text-fg"
         >
           Volvé al login
         </a>

@@ -43,17 +43,17 @@ function typeStyle(type: HistoryTransaction["type"]): {
     case "deposit":
       return {
         icon: "▲",
-        className: "text-green-600 dark:text-green-400",
+        className: "text-accent",
       };
     case "withdraw":
       return {
         icon: "▼",
-        className: "text-red-600 dark:text-red-400",
+        className: "text-red-400",
       };
     case "reset":
       return {
         icon: "↺",
-        className: "text-amber-700 dark:text-amber-400",
+        className: "text-amber-400",
       };
   }
 }
@@ -166,16 +166,14 @@ export function TransactionHistory({
   return (
     <Card>
       <div className="flex items-baseline justify-between gap-2">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-          Historial
-        </h2>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <h2 className="text-lg font-semibold text-fg">Historial</h2>
+        <p className="text-sm text-muted">
           {items.length} {items.length === 1 ? "movimiento" : "movimientos"}
         </p>
       </div>
 
       {items.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-zinc-300 bg-zinc-50 px-4 py-6 text-center text-sm text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-400">
+        <p className="rounded-lg border border-dashed border-line bg-elevated px-4 py-6 text-center text-sm text-muted">
           Todavía no hay movimientos en esta alcancía.
         </p>
       ) : (
@@ -187,8 +185,8 @@ export function TransactionHistory({
               <li
                 className={
                   isReset
-                    ? "flex items-start justify-between gap-3 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2.5 dark:border-amber-800/60 dark:bg-amber-950/30"
-                    : "flex items-start justify-between gap-3 rounded-lg border border-zinc-200 bg-white px-3 py-2.5 dark:border-zinc-800 dark:bg-zinc-900"
+                    ? "flex items-start justify-between gap-3 rounded-lg border border-amber-400/30 bg-amber-400/10 px-3 py-2.5"
+                    : "flex items-start justify-between gap-3 rounded-lg border border-rowline bg-elevated px-3 py-2.5"
                 }
                 key={tx.id}
               >
@@ -204,22 +202,20 @@ export function TransactionHistory({
                       className={`font-semibold tabular-nums ${style.className}`}
                     >
                       {amountText(tx.type, tx.amountMinor, exponent)}{" "}
-                      <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                      <span className="text-xs font-medium text-faint">
                         {currency}
                       </span>
                     </span>
                     {tx.counterparty !== null && tx.counterparty !== "" && (
-                      <span className="text-sm text-zinc-600 dark:text-zinc-400">
+                      <span className="text-sm text-muted">
                         · {tx.counterparty}
                       </span>
                     )}
                   </div>
                   {tx.note !== "" && (
-                    <p className="break-words text-sm text-zinc-600 dark:text-zinc-400">
-                      {tx.note}
-                    </p>
+                    <p className="break-words text-sm text-muted">{tx.note}</p>
                   )}
-                  <p className="text-xs text-zinc-500 dark:text-zinc-500">
+                  <p className="text-xs text-faint">
                     {authorName(authorNames, tx.createdBy)} ·{" "}
                     <time dateTime={new Date(tx.createdAt).toISOString()}>
                       {formatTimestamp(tx.createdAt)}
@@ -227,7 +223,7 @@ export function TransactionHistory({
                   </p>
                 </div>
                 {isReset && (
-                  <span className="shrink-0 rounded-full border border-amber-300 bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800 dark:border-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
+                  <span className="shrink-0 rounded-full border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 text-xs font-medium text-amber-400">
                     Reset
                   </span>
                 )}
@@ -239,7 +235,7 @@ export function TransactionHistory({
 
       {error !== null && (
         <p
-          className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300"
+          className="rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300"
           role="alert"
         >
           {error}

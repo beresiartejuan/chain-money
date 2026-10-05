@@ -38,7 +38,7 @@ export function ConfirmDialog({
       <div className="flex justify-end gap-2">
         <SmallButton onClick={onClose}>Cancelar</SmallButton>
         <button
-          className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+          className="rounded-md bg-red-500/90 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-60"
           disabled={pending}
           onClick={onConfirm}
           type="button"

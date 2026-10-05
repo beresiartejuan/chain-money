@@ -53,19 +53,19 @@ function FieldError({ id, children }: { id: string; children?: string }) {
     return null;
   }
   return (
-    <p className="text-sm text-red-600 dark:text-red-400" id={id}>
+    <p className="text-sm text-red-400" id={id}>
       {children}
     </p>
   );
 }
 
 const inputClassName =
-  "h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition-colors focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-zinc-100 dark:focus:ring-zinc-100/10";
+  "h-10 w-full rounded-md border border-line bg-elevated px-3 text-sm text-fg outline-none transition-colors focus:border-accent/60 focus:ring-2 focus:ring-accent/15";
 
 const textareaClassName =
-  "min-h-20 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-zinc-100 dark:focus:ring-zinc-100/10";
+  "min-h-20 w-full rounded-md border border-line bg-elevated px-3 py-2 text-sm text-fg outline-none transition-colors focus:border-accent/60 focus:ring-2 focus:ring-accent/15";
 
-const labelClassName = "text-sm font-medium text-zinc-700 dark:text-zinc-300";
+const labelClassName = "text-sm font-medium text-muted";
 
 /**
  * Arma el input para el schema/action: los opcionales vacíos (o con solo
@@ -179,9 +179,7 @@ export function TransactionForm({
 
   return (
     <Card>
-      <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-        Nuevo movimiento
-      </h2>
+      <h2 className="text-lg font-semibold text-fg">Nuevo movimiento</h2>
 
       <form action={handleSubmit} className="flex flex-col gap-4">
         {banner !== null && <FormErrorBanner>{banner}</FormErrorBanner>}
@@ -190,7 +188,7 @@ export function TransactionForm({
           <span className={labelClassName}>Tipo de movimiento</span>
           <div
             aria-label="Tipo de movimiento"
-            className="grid grid-cols-2 gap-1 rounded-lg border border-zinc-300 bg-zinc-100 p-1 dark:border-zinc-700 dark:bg-zinc-800"
+            className="grid grid-cols-2 gap-1 rounded-lg border border-line bg-elevated p-1"
             role="radiogroup"
           >
             <label className="cursor-pointer">
@@ -204,7 +202,7 @@ export function TransactionForm({
                 type="radio"
                 value="deposit"
               />
-              <span className="block rounded-md px-3 py-1.5 text-center text-sm font-medium text-zinc-600 transition-colors peer-checked:bg-white peer-checked:text-zinc-900 peer-checked:shadow-sm peer-focus-visible:ring-2 peer-focus-visible:ring-zinc-900/30 dark:text-zinc-400 dark:peer-checked:bg-zinc-900 dark:peer-checked:text-zinc-100 dark:peer-focus-visible:ring-zinc-100/40">
+              <span className="block rounded-md px-3 py-1.5 text-center text-sm font-medium text-muted transition-colors peer-checked:bg-accent/15 peer-checked:text-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent/40">
                 ▲ Depósito
               </span>
             </label>
@@ -219,7 +217,7 @@ export function TransactionForm({
                 type="radio"
                 value="withdraw"
               />
-              <span className="block rounded-md px-3 py-1.5 text-center text-sm font-medium text-zinc-600 transition-colors peer-checked:bg-white peer-checked:text-zinc-900 peer-checked:shadow-sm peer-focus-visible:ring-2 peer-focus-visible:ring-zinc-900/40 dark:text-zinc-400 dark:peer-checked:bg-zinc-900 dark:peer-checked:text-zinc-100 dark:peer-focus-visible:ring-zinc-100/40">
+              <span className="block rounded-md px-3 py-1.5 text-center text-sm font-medium text-muted transition-colors peer-checked:bg-accent/15 peer-checked:text-accent peer-focus-visible:ring-2 peer-focus-visible:ring-accent/40">
                 ▼ Extracción
               </span>
             </label>
@@ -251,7 +249,7 @@ export function TransactionForm({
               {fieldErrors.amount}
             </FieldError>
           ) : (
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-xs text-faint">
               {exponent === 0
                 ? "Esta moneda no usa decimales."
                 : `Hasta ${exponent} decimales.`}
@@ -296,7 +294,7 @@ export function TransactionForm({
             <label className={labelClassName} htmlFor="transaction-note">
               Nota (opcional)
             </label>
-            <span className="text-xs tabular-nums text-zinc-500 dark:text-zinc-400">
+            <span className="text-xs tabular-nums text-faint">
               {note.length}/{NOTE_MAX_LENGTH}
             </span>
           </div>

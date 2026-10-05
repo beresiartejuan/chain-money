@@ -89,14 +89,14 @@ const PERMISSION_BADGE_LABELS: Record<string, string> = {
 function StatusBadge({ status }: { status: string }) {
   if (status === "active") {
     return (
-      <span className="rounded-full border border-green-300 bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800 dark:border-green-700 dark:bg-green-900/40 dark:text-green-300">
+      <span className="rounded-full border border-accent/30 bg-accent-dim px-2 py-0.5 text-xs font-medium text-accent">
         Activo
       </span>
     );
   }
   if (status === "expired") {
     return (
-      <span className="rounded-full border border-amber-300 bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800 dark:border-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
+      <span className="rounded-full border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 text-xs font-medium text-amber-400">
         Expirado
       </span>
     );
@@ -125,7 +125,7 @@ function FieldError({ id, children }: { id: string; children?: string }) {
     return null;
   }
   return (
-    <p className="text-sm text-red-600 dark:text-red-400" id={id}>
+    <p className="text-sm text-red-400" id={id}>
       {children}
     </p>
   );
@@ -275,10 +275,8 @@ export function TokenPanel({
     <>
       <Card>
         <div className="flex flex-col gap-1">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-            Compartir
-          </h2>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <h2 className="text-lg font-semibold text-fg">Compartir</h2>
+          <p className="text-sm text-muted">
             Creá un token de un solo uso para invitar a alguien a esta alcancía:
             quien lo canjee obtiene los permisos que elijas.
           </p>
@@ -291,17 +289,17 @@ export function TokenPanel({
             }
             className="flex flex-col gap-2"
           >
-            <legend className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <legend className="text-sm font-medium text-muted">
               Permisos para quien canjee el token
             </legend>
             {PERMISSION_OPTIONS.map((option) => (
               <label
-                className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300"
+                className="flex items-center gap-2 text-sm text-fg"
                 key={option.id}
               >
                 <input
                   checked={selected.includes(option.value)}
-                  className="size-4 rounded border-zinc-300 accent-zinc-900 dark:border-zinc-600 dark:accent-zinc-100"
+                  className="size-4 rounded border-line accent-[#2ee19b]"
                   disabled={option.locked}
                   id={option.id}
                   name="token-permissions"
@@ -313,9 +311,7 @@ export function TokenPanel({
                 />
                 {option.label}
                 {option.locked && (
-                  <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                    (siempre activo)
-                  </span>
+                  <span className="text-xs text-faint">(siempre activo)</span>
                 )}
               </label>
             ))}
@@ -333,29 +329,27 @@ export function TokenPanel({
           </div>
         </form>
 
-        <div className="flex items-baseline justify-between gap-2 border-t border-zinc-200 pt-4 dark:border-zinc-800">
-          <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-            Tokens compartidos
-          </h3>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <div className="flex items-baseline justify-between gap-2 border-t border-rowline pt-4">
+          <h3 className="text-sm font-semibold text-fg">Tokens compartidos</h3>
+          <p className="text-sm text-muted">
             {tokens.length} {tokens.length === 1 ? "token" : "tokens"}
           </p>
         </div>
 
         {tokens.length === 0 ? (
-          <p className="rounded-lg border border-dashed border-zinc-300 bg-zinc-50 px-4 py-6 text-center text-sm text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-400">
+          <p className="rounded-lg border border-dashed border-line bg-elevated px-4 py-6 text-center text-sm text-muted">
             Todavía no compartiste esta alcancía.
           </p>
         ) : (
           <ul className="flex flex-col gap-2">
             {tokens.map((token) => (
               <li
-                className="flex items-start justify-between gap-3 rounded-lg border border-zinc-200 bg-white px-3 py-2.5 dark:border-zinc-800 dark:bg-zinc-900"
+                className="flex items-start justify-between gap-3 rounded-lg border border-rowline bg-elevated px-3 py-2.5"
                 key={token.id}
               >
                 <div className="flex min-w-0 flex-col gap-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <code className="font-mono text-sm text-zinc-900 dark:text-zinc-100">
+                    <code className="font-mono text-sm text-fg">
                       {token.tokenPrefix}…
                     </code>
                     <StatusBadge status={token.status} />
@@ -367,7 +361,7 @@ export function TokenPanel({
                       </Badge>
                     ))}
                   </div>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-500">
+                  <p className="text-xs text-faint">
                     Creado{" "}
                     <time dateTime={new Date(token.createdAt).toISOString()}>
                       {formatTimestamp(token.createdAt)}
@@ -415,18 +409,18 @@ export function TokenPanel({
           confirmLabel={confirm.kind === "expire" ? "Expirar" : "Borrar"}
           description={
             confirm.kind === "expire" ? (
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+              <p className="text-sm text-muted">
                 El token{" "}
-                <code className="font-mono text-zinc-900 dark:text-zinc-100">
+                <code className="font-mono text-fg">
                   {confirm.token.tokenPrefix}…
                 </code>{" "}
                 va a quedar expirado: ya no se podrá canjear, pero sigue en la
                 lista como registro.
               </p>
             ) : (
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+              <p className="text-sm text-muted">
                 El token{" "}
-                <code className="font-mono text-zinc-900 dark:text-zinc-100">
+                <code className="font-mono text-fg">
                   {confirm.token.tokenPrefix}…
                 </code>{" "}
                 se va a borrar definitivamente. Si ya lo compartiste, quien lo

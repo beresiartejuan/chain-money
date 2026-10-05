@@ -87,7 +87,7 @@ export function ResetBox({
         <Modal onClose={() => setOpen(false)} title="Resetear alcancía">
           {done !== null ? (
             <>
-              <p className="rounded-md border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700 dark:border-green-900/50 dark:bg-green-950/40 dark:text-green-300">
+              <p className="rounded-md border border-accent/30 bg-accent-dim px-3 py-2 text-sm text-accent">
                 {done}
               </p>
               <div className="flex justify-end">
@@ -96,14 +96,14 @@ export function ResetBox({
             </>
           ) : (
             <>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+              <p className="text-sm text-muted">
                 El balance actual{" "}
-                <span className="font-semibold tabular-nums text-zinc-900 dark:text-zinc-50">
+                <span className="font-semibold tabular-nums text-fg">
                   {formattedBalance} {currency}
                 </span>{" "}
                 va a quedar en 0.
               </p>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+              <p className="text-sm text-muted">
                 Se registrará en el historial; no se puede deshacer.
               </p>
               {banner !== null && <FormErrorBanner>{banner}</FormErrorBanner>}
@@ -112,7 +112,7 @@ export function ResetBox({
                   Cancelar
                 </SmallButton>
                 <button
-                  className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="rounded-md bg-red-500/90 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-60"
                   disabled={pending}
                   onClick={() => {
                     void handleConfirm();

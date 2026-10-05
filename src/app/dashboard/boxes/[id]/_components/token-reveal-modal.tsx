@@ -55,17 +55,17 @@ export function TokenRevealModal({
 
   return (
     <Modal onClose={onClose} title="Token creado">
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-sm text-muted">
         Compartilo con la persona que quieras invitar a la alcancía; lo canjea
         desde la pantalla de canje.
       </p>
 
-      <p className="rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800 dark:border-amber-700/60 dark:bg-amber-950/40 dark:text-amber-300">
+      <p className="rounded-md border border-amber-400/40 bg-amber-400/10 px-3 py-2 text-sm font-semibold text-amber-400">
         No vas a ver este token de nuevo. Es de un solo uso.
       </p>
 
-      <div className="rounded-md border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800">
-        <code className="block break-all font-mono text-sm leading-6 text-zinc-900 select-all dark:text-zinc-100">
+      <div className="rounded-md border border-line bg-elevated p-3">
+        <code className="block break-all font-mono text-sm leading-6 text-accent select-all">
           {token}
         </code>
       </div>

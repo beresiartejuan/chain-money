@@ -118,16 +118,12 @@ export function LoginForm() {
 
   return (
     <form
-      className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+      className="flex flex-col gap-4 rounded-xl border border-line bg-surface p-6"
       action={handleSubmit}
     >
       <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-          Iniciar sesión
-        </h2>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
-          Entrá con tu email y contraseña.
-        </p>
+        <h2 className="text-lg font-semibold text-fg">Iniciar sesión</h2>
+        <p className="text-sm text-muted">Entrá con tu email y contraseña.</p>
       </div>
 
       {recovered && <FormSuccessBanner>{RECOVERED_BANNER}</FormSuccessBanner>}
@@ -158,20 +154,20 @@ export function LoginForm() {
         Iniciar sesión
       </SubmitButton>
 
-      <p className="text-center text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-center text-sm text-muted">
         ¿No tenés cuenta?{" "}
         <Link
           href="/register"
-          className="font-medium text-zinc-900 underline underline-offset-2 dark:text-zinc-100"
+          className="font-medium text-accent underline underline-offset-2 hover:text-fg"
         >
           Creá una
         </Link>
       </p>
-      <p className="text-center text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-center text-sm text-muted">
         ¿Olvidaste tu contraseña?{" "}
         <Link
           href="/recover"
-          className="font-medium text-zinc-900 underline underline-offset-2 dark:text-zinc-100"
+          className="font-medium text-accent underline underline-offset-2 hover:text-fg"
         >
           Recuperá tu cuenta
         </Link>

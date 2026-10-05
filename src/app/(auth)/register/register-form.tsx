@@ -105,14 +105,12 @@ export function RegisterForm() {
 
   return (
     <form
-      className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+      className="flex flex-col gap-4 rounded-xl border border-line bg-surface p-6"
       action={handleSubmit}
     >
       <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-          Crear cuenta
-        </h2>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <h2 className="text-lg font-semibold text-fg">Crear cuenta</h2>
+        <p className="text-sm text-muted">
           Registrá tu email, nombre y contraseña.
         </p>
       </div>
@@ -153,11 +151,11 @@ export function RegisterForm() {
         Crear cuenta
       </SubmitButton>
 
-      <p className="text-center text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-center text-sm text-muted">
         ¿Ya tenés cuenta?{" "}
         <Link
           href="/login"
-          className="font-medium text-zinc-900 underline underline-offset-2 dark:text-zinc-100"
+          className="font-medium text-accent underline underline-offset-2 hover:text-fg"
         >
           Iniciá sesión
         </Link>
@@ -187,19 +185,19 @@ function RecoveryPhraseStep({
   }
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="flex flex-col gap-4 rounded-xl border border-line bg-surface p-6">
       <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+        <h2 className="text-lg font-semibold text-fg">
           Guardá tu frase de recuperación
         </h2>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-muted">
           Es la única forma de recuperar tu cuenta si olvidás la contraseña. No
           se envía por email y solo se muestra esta vez.
         </p>
       </div>
 
-      <div className="rounded-md border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800">
-        <p className="break-words font-mono text-sm leading-6 text-zinc-900 dark:text-zinc-100">
+      <div className="rounded-md border border-line bg-elevated p-3">
+        <p className="break-words font-mono text-sm leading-6 text-accent select-all">
           {recoveryPhrase}
         </p>
       </div>
@@ -207,17 +205,17 @@ function RecoveryPhraseStep({
       <button
         type="button"
         onClick={handleCopy}
-        className="h-10 w-full rounded-md border border-zinc-300 bg-white text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
+        className="h-10 w-full rounded-md border border-line bg-elevated text-sm font-medium text-muted transition-colors hover:border-accent/40 hover:text-fg"
       >
         {copied ? "¡Copiada!" : "Copiar frase"}
       </button>
 
-      <label className="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+      <label className="flex items-start gap-2 text-sm text-fg">
         <input
           type="checkbox"
           checked={confirmed}
           onChange={(event) => setConfirmed(event.target.checked)}
-          className="mt-0.5 size-4 rounded border-zinc-300 dark:border-zinc-600"
+          className="mt-0.5 size-4 rounded border-line accent-[#2ee19b]"
         />
         La guardé en un lugar seguro
       </label>
@@ -226,7 +224,7 @@ function RecoveryPhraseStep({
         type="button"
         onClick={onDone}
         disabled={!confirmed}
-        className="h-10 w-full rounded-md bg-zinc-900 px-4 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="h-10 w-full rounded-md bg-accent px-4 text-sm font-semibold text-black transition-shadow hover:shadow-[0_0_16px_rgba(46,225,155,0.35)] disabled:cursor-not-allowed disabled:opacity-60"
       >
         Continuar
       </button>

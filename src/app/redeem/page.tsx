@@ -21,7 +21,7 @@ export default async function RedeemPage() {
   return (
     // Mismo espíritu que el layout `(auth)`: card centrada en pantalla
     // completa.
-    <div className="flex min-h-full flex-1 flex-col items-center justify-center bg-zinc-50 px-4 py-16 dark:bg-zinc-950">
+    <div className="flex min-h-full flex-1 flex-col items-center justify-center bg-canvas px-4 py-16">
       <div className="w-full max-w-sm">
         <RedeemForm />
       </div>

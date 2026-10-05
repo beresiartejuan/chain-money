@@ -54,22 +54,20 @@ export function Modal({
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/50 p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-canvas/70 p-4 backdrop-blur-sm">
       <div
         aria-label={title}
         aria-modal="true"
-        className="flex max-h-full w-full max-w-sm flex-col gap-4 overflow-y-auto rounded-xl border border-zinc-200 bg-white p-6 shadow-lg focus:outline-none dark:border-zinc-800 dark:bg-zinc-900"
+        className="flex max-h-full w-full max-w-sm flex-col gap-4 overflow-y-auto rounded-xl border border-line bg-surface p-6 shadow-lg focus:outline-none"
         ref={panelRef}
         role="dialog"
         tabIndex={-1}
       >
         <div className="flex items-start justify-between gap-2">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-            {title}
-          </h2>
+          <h2 className="text-lg font-semibold text-fg">{title}</h2>
           <button
             aria-label="Cerrar"
-            className="-me-1 -mt-1 rounded-md p-1 text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+            className="-me-1 -mt-1 rounded-md p-1 text-muted transition-colors hover:bg-elevated hover:text-fg"
             onClick={onClose}
             type="button"
           >

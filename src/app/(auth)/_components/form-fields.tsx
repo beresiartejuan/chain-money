@@ -15,7 +15,7 @@ export function FormError({ id, children }: { id: string; children?: string }) {
     return null;
   }
   return (
-    <p id={id} className="text-sm text-red-600 dark:text-red-400">
+    <p id={id} className="text-sm text-red-400">
       {children}
     </p>
   );
@@ -30,10 +30,7 @@ function FieldLabel({
   children: string;
 }) {
   return (
-    <label
-      htmlFor={htmlFor}
-      className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
-    >
+    <label htmlFor={htmlFor} className="block text-sm font-medium text-muted">
       {children}
     </label>
   );
@@ -61,7 +58,7 @@ export function TextField({
         id={id}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? errorId : undefined}
-        className="h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-zinc-100 dark:focus:ring-zinc-100/10"
+        className="h-10 w-full rounded-md border border-line bg-elevated px-3 text-sm text-fg outline-none transition-colors placeholder:text-faint focus:border-accent/60 focus:ring-2 focus:ring-accent/15"
         {...inputProps}
       />
       <FormError id={errorId}>{error}</FormError>
@@ -88,7 +85,7 @@ export function TextAreaField({
         id={id}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? errorId : undefined}
-        className="min-h-24 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 font-mono text-sm text-zinc-900 outline-none transition-colors placeholder:text-zinc-400 focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-zinc-100 dark:focus:ring-zinc-100/10"
+        className="min-h-24 w-full rounded-md border border-line bg-elevated px-3 py-2 font-mono text-sm text-fg outline-none transition-colors placeholder:text-faint focus:border-accent/60 focus:ring-2 focus:ring-accent/15"
         {...textareaProps}
       />
       <FormError id={errorId}>{error}</FormError>
@@ -110,7 +107,7 @@ export function SubmitButton({
     <button
       type="submit"
       disabled={pending}
-      className="h-10 w-full rounded-md bg-zinc-900 px-4 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+      className="h-10 w-full rounded-md bg-accent px-4 text-sm font-semibold text-black transition-shadow hover:shadow-[0_0_16px_rgba(46,225,155,0.35)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-60"
     >
       {pending ? pendingLabel : children}
     </button>
@@ -122,7 +119,7 @@ export function FormErrorBanner({ children }: { children: string }) {
   return (
     <div
       role="alert"
-      className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300"
+      className="rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300"
     >
       {children}
     </div>
@@ -132,7 +129,7 @@ export function FormErrorBanner({ children }: { children: string }) {
 /** Banner de éxito (p. ej. confirmación de recovery en /login). */
 export function FormSuccessBanner({ children }: { children: string }) {
   return (
-    <output className="block rounded-md border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700 dark:border-green-900/50 dark:bg-green-950/40 dark:text-green-300">
+    <output className="block rounded-md border border-accent/30 bg-accent-dim px-3 py-2 text-sm text-accent">
       {children}
     </output>
   );

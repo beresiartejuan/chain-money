@@ -45,7 +45,7 @@ export default async function DashboardPage() {
     // proxy y acá (la página exige usuario resuelto contra la DB).
     return (
       <main className="flex flex-1 items-center justify-center p-4">
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-muted">
           Tu sesión expiró. Recargá la página para iniciar sesión.
         </p>
       </main>
