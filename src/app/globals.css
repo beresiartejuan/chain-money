@@ -1,8 +1,36 @@
 @import "tailwindcss";
 
+/*
+ * Tema de marca (T103b): la app entera usa la identidad de la landing
+ * (docs/images/hero.png) — base verde-negra casi pura, superficies
+ * levantadas y un único acento verde-agua. Es dark-first: hay UNA paleta,
+ * los componentes no definen variantes `dark:`.
+ *
+ * Uso semántico:
+ *   bg-canvas   fondo de la app (equivalente a `bg-[#040b09]`)
+ *   bg-surface  cards, paneles y modales
+ *   bg-elevated inputs y filas dentro de una card
+ *   text-fg / text-muted / text-faint  jerarquía de texto
+ *   border-line / border-rowline       hairlines (card / interna)
+ *   bg-accent / text-accent / border-accent  acento de marca (#2ee19b)
+ *   bg-accent-dim  relleno tenue del acento (badges, banners)
+ */
+@theme {
+  --color-canvas: #040b09;
+  --color-surface: #0c1512;
+  --color-elevated: #14211c;
+  --color-fg: #f2f7f4;
+  --color-muted: #9db3a9;
+  --color-faint: #647870;
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-rowline: rgba(255, 255, 255, 0.05);
+  --color-accent: #2ee19b;
+  --color-accent-dim: rgba(46, 225, 155, 0.12);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #040b09;
+  --foreground: #f2f7f4;
 }
 
 @theme inline {
@@ -12,15 +40,50 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Tira de libro contable de la landing: cada fila se "anota" con un fade
+   traslación, sincronizado con el scroll (`animation-timeline: view()`,
+   soportado en Chromium/Firefox/Safari modernos). Sin soporte o con
+   `prefers-reduced-motion: reduce`, el contenido es visible al toque. */
+@keyframes entry {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .ledger-reveal {
+    opacity: 0;
+    animation: entry 1s linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 45%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ledger-reveal {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }

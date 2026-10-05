@@ -10,6 +10,9 @@
  * cada action / carga de página. Por eso este módulo NO importa nada que use
  * `next/headers` ni la DB: `next/server` (NextRequest/NextResponse) sí está
  * permitido en proxy.
+ *
+ * `/` ya no redirige: sin sesión muestra la landing pública (`src/app/page.tsx`)
+ * y con sesión lleva al dashboard.
  */
 import { type NextRequest, NextResponse } from "next/server";
 
@@ -23,8 +26,6 @@ const REDEEM_PATH = "/redeem";
 const AUTH_ROUTES = ["/login", "/register", "/recover"] as const;
 /** Destino por defecto para un visitante autenticado. */
 const AUTHENTICATED_DEFAULT = "/dashboard";
-/** Destino por defecto para un visitante sin sesión. */
-const UNAUTHENTICATED_DEFAULT = "/login";
 
 /**
  * ¿Es una ruta privada (requiere sesión)?
@@ -46,8 +47,7 @@ export function requiresAuth(pathname: string): boolean {
 /**
  * ¿Es una ruta del flujo de auth (`/login`, `/register`, `/recover`)?
  *
- * Con sesión activa estas rutas redirigen a `/dashboard`; también deciden
- * dónde cae `/` según haya sesión o no.
+ * Con sesión activa estas rutas redirigen a `/dashboard`.
  */
 export function isAuthRoute(pathname: string): boolean {
   return (AUTH_ROUTES as readonly string[]).includes(pathname);
@@ -78,11 +78,8 @@ export function proxyDecision(
   if (requiresAuth(pathname)) {
     return { location: `/login?next=${encodeURIComponent(pathname)}` };
   }
-  // `/` sin sesión cae en /login; el resto (auth routes, /api, estáticos…)
-  // pasa sin cambios.
-  if (pathname === "/") {
-    return { location: UNAUTHENTICATED_DEFAULT };
-  }
+  // `/` sin sesión muestra la landing pública (page.tsx en la raíz); el
+  // resto (auth routes, /api, estáticos…) pasa sin cambios.
   return null;
 }
 

@@ -80,8 +80,8 @@ describe("proxyDecision", () => {
       });
     });
 
-    it("sends / to /login", () => {
-      expect(proxyDecision("/", false)).toEqual({ location: "/login" });
+    it("keeps / on the public landing instead of redirecting to /login", () => {
+      expect(proxyDecision("/", false)).toBeNull();
     });
 
     it("lets auth routes, /api and anything else pass through", () => {
@@ -132,11 +132,10 @@ describe("proxy (NextRequest integration)", () => {
     );
   });
 
-  it("redirects / to /login without session and to /dashboard with one", () => {
+  it("keeps / on the public landing without session; with one, goes to dashboard", () => {
     const anonymous = proxy(makeRequest("/"));
-    expect(anonymous.headers.get("location")).toBe(
-      "https://chain-money.test/login",
-    );
+    expect(anonymous.headers.get("location")).toBeNull();
+    expect(anonymous.status).toBe(200);
 
     const authenticated = proxy(makeRequest("/", true));
     expect(authenticated.headers.get("location")).toBe(
