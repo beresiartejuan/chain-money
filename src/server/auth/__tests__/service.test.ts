@@ -180,6 +180,18 @@ describe("auth service", () => {
       const after = await db.select().from(sessions);
       expect(after.length).toBe(before.length);
     });
+
+    it("AeadError con key malformada (no Buffer de 32 bytes): error de deploy, nada se crea", async () => {
+      const badKey = Buffer.alloc(16, 1); // 16 bytes: la forma no es 32
+      const { AeadError } = await import("@/lib/crypto/aead");
+      const email = `badkey-${newId()}@example.com`;
+      await expect(
+        registerUser(db, { ...VALID_REGISTER, email }, badKey),
+      ).rejects.toBeInstanceOf(AeadError);
+      // El chequeo de shape corre antes de insertar: la tabla no creció.
+      const after = await db.select().from(users).where(eq(users.email, email));
+      expect(after.length).toBe(0);
+    });
   });
 
   describe("loginUser", () => {

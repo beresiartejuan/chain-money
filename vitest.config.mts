@@ -19,7 +19,9 @@ const config = defineConfig({
     ],
     coverage: {
       provider: "v8",
-      reporter: ["text", "html"],
+      // `html` para inspección local; `json-summary` alimenta el resumen de
+      // coverage en el Job Summary de CI (scripts/coverage-summary.mjs).
+      reporter: ["text", "html", "json-summary"],
       // Only application logic is measured; UI and generated/db code stay out.
       // src/server does not exist yet, but the glob is harmless until it does.
       include: ["src/lib/**", "src/server/**"],
@@ -36,6 +38,13 @@ const config = defineConfig({
         // decisión del owner).
         "src/server/**/__tests__/**",
         "src/server/**/actions.ts",
+        "src/server/auth/recovery-actions.ts",
+        // Glue de cookies de sesión (`next/headers`): `cookies()` lanza
+        // fuera del scope de un request, así que no ejecuta en Vitest
+        // (verificado). Cada función es ≤ 10 líneas que solo leen/setean la
+        // cookie y delegan en `resolveSessionUser`/`createSessionRow`
+        // (≥ 93% cubiertos).
+        "src/server/auth/session.ts",
       ],
       thresholds: {
         lines: 80,

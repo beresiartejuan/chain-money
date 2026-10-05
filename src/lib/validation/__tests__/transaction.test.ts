@@ -174,6 +174,21 @@ describe("transactionSchema (exponent 0, ej. CLP/JPY)", () => {
     }
   });
 
+  it("rechaza montos que exceden el rago seguro con message amigable", () => {
+    // parseAmountToMinorUnits lanza con BigInt > MAX_SAFE_INTEGER; el guard
+    // lo convierte en "El monto es demasiado grande." (nunca un crash raro
+    // de BigInt en la UI).
+    const schema2 = transactionSchema(2);
+    const result = schema2.safeParse({
+      type: "deposit",
+      amount: "99999999999999999", // 17 dígitos: minor > 2^53
+    });
+    expect(result.success).toBe(false);
+    expect(fieldIssue(result as never, "amount")).toBe(
+      "El monto es demasiado grande.",
+    );
+  });
+
   it('rechaza "12.5" (decimales con exponent 0) con issue en amount', () => {
     const result = schema.safeParse({ type: "deposit", amount: "12.5" });
     expect(result.success).toBe(false);

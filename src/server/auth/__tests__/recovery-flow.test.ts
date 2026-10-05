@@ -3,6 +3,7 @@ import { beforeAll, describe, expect, it, vi } from "vitest";
 import { createTestDb } from "@/db/__tests__/helpers";
 import { sessions, users } from "@/db/schema";
 import { hashAccessToken } from "@/lib/crypto/token";
+import { RECOVERY_WORDLIST } from "@/lib/recovery-words";
 import { encodeEncryptionKeyForTests } from "@/server/auth/__tests__/helpers";
 import { recoverAccount } from "@/server/auth/recovery";
 import {
@@ -147,6 +148,23 @@ describe("recoverAccount (T035)", () => {
       password: NEW_PASSWORD,
     });
     expect(user.email).toBe(EMAIL);
+    resetRateLimit(`recover:${EMAIL}`);
+  });
+
+  it("frase bien formada (12 palabras de la wordlist) pero incorrecta → InvalidCredentialsError", async () => {
+    // Distinto del caso anterior: acá la frase pasa el schema, ES parseable
+    // (`parseRecoveryPhrase` devuelve palabras) pero su hash no coincide
+    // con el guardado. Cubre la rama "parsedPhrase válida → hash mismatch".
+    const validButWrong = RECOVERY_WORDLIST.slice(0, 12).join("-");
+
+    await expect(
+      recoverAccount(db, {
+        email: EMAIL,
+        phrase: validButWrong,
+        newPassword: NEW_PASSWORD,
+      }),
+    ).rejects.toBeInstanceOf(InvalidCredentialsError);
+
     resetRateLimit(`recover:${EMAIL}`);
   });
 

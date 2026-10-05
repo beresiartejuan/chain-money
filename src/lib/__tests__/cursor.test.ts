@@ -1,9 +1,35 @@
-import { describe, expect, it } from "vitest";
+import { Buffer } from "node:buffer";
+import { afterEach, describe, expect, it } from "vitest";
 import { type Cursor, compareTuples, makeCursor, parseCursor } from "../cursor";
 
 function cursorOf(createdAtMs: number, id: string): Cursor {
   return { createdAtMs, id };
 }
+
+// Referencia explícita al Buffer real: los tests de dual-runtime ocultan el
+// global `Buffer` para simular el navegador, así que esta importación es la
+// única fuente confiable para restaurarlo (un `globalThis.Buffer = Buffer`
+// leería el shadoweado, quedándose sin Buffer para siempre).
+const REAL_BUFFER = Buffer;
+
+/** Oculta el global Buffer para forzar el camino btoa/atob del navegador. */
+function hideBuffer(): void {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, "Buffer");
+  if (!descriptor?.configurable) {
+    throw new Error("Buffer global no configurable");
+  }
+  // @ts-expect-error -- asignamos deliberadamente un valor no-Buffer
+  globalThis.Buffer = undefined;
+}
+
+/** Restaura el global Buffer real después de `hideBuffer()`. */
+function restoreBuffer(): void {
+  globalThis.Buffer = REAL_BUFFER;
+}
+
+afterEach(() => {
+  restoreBuffer();
+});
 
 describe("makeCursor + parseCursor roundtrip", () => {
   it("is identity for a simple cursor", () => {
@@ -124,5 +150,43 @@ describe("compareTuples", () => {
     const sorted = actual.sort(compareTuples);
 
     expect(sorted).toEqual(expected);
+  });
+});
+
+describe("dual-runtime (camino navegador, sin Buffer)", () => {
+  // El módulo elige `Buffer` si existe y si no `btoa`/`atob` + TextEncoder/
+  // TextDecoder (lo que corre en el cliente). El código sin Buffer es la
+  // mitad del motivo del módulo: sin esta prueba podría romperse en el
+  // navegador aunque los roundtrips pasen en Node.
+
+  it("makeCursor/parseCursor roundtrip vía btoa/atob", () => {
+    hideBuffer();
+
+    const cursor = cursorOf(1_726_000_000_000, "id-con-ñ-y-日本");
+    expect(parseCursor(makeCursor(cursor.createdAtMs, cursor.id))).toEqual(
+      cursor,
+    );
+  });
+
+  it("codifica sin padding y sin +/-/ en modo navegador, igual que en Node", () => {
+    hideBuffer();
+
+    const encoded = makeCursor(1_726_000_000_000, "tx_1");
+    expect(encoded).not.toMatch(/[+/=]/);
+
+    // El camino btoa/atob debe producir exactamente el mismo string que el
+    // camino Buffer: el backend no puede distinguir qué runtime codificó.
+    restoreBuffer();
+    expect(encoded).toBe(makeCursor(1_726_000_000_000, "tx_1"));
+  });
+
+  it("parseCursor devuelve null con base64 inválido en modo navegador", () => {
+    hideBuffer();
+
+    // "!!!" no es base64 válido: atob lanza y decodeBase64Url devuelve null.
+    expect(parseCursor("!!!")).toBeNull();
+
+    // base64 válido cuyo decodificado no es JSON: cae en el camino de JSON.
+    expect(parseCursor(btoa("not-json"))).toBeNull();
   });
 });

@@ -32,6 +32,17 @@ describe("parseEnv", () => {
     expect(parsed.encryptionKey).toBe("base64-key");
   });
 
+  it("treats any custom NODE_ENV (string raro) as non-production", async () => {
+    // resolveNodeEnv solo trata literal "production" como producción; cualquier
+    // otro valor no vacío cae en la rama "no exige key" (línea 27 de env.ts).
+    const { parseEnv } = await loadEnvModule();
+    const parsed = parseEnv({
+      TURSO_DATABASE_URL: "file:./local.db",
+      NODE_ENV: "staging",
+    });
+    expect(parsed.encryptionKey).toBeUndefined();
+  });
+
   it("rejects missing TURSO_DATABASE_URL", async () => {
     const { parseEnv } = await loadEnvModule();
     expect(() => parseEnv({})).toThrowError(/TURSO_DATABASE_URL/);
