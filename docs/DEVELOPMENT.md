@@ -31,7 +31,7 @@ pnpm exec cp .env.example .env
 | `pnpm format` | Formatea con Biome. |
 | `pnpm test` | Corre la suite completa de Vitest (una pasada). |
 | `pnpm test:watch` | Vitest en modo watch (típico durante desarrollo). |
-| `pnpm test:coverage` | Cobertura V8 con umbrales (lines/functions ≥ 80, branches ≥ 70 sobre `src/lib` + `src/server`). |
+| `pnpm test:coverage` | Cobertura V8 con umbrales (lines/functions ≥ 80, branches ≥ 70 sobre `src/lib` + `src/server`). Genera `coverage/` en texto, HTML y `json-summary`. |
 | `pnpm db:generate` | Genera migraciones de Drizzle. |
 | `pnpm db:migrate` | Aplica migraciones. |
 | `pnpm db:push` | Push del schema a la DB. |
@@ -49,7 +49,7 @@ Ver [`DATABASE.md`](./DATABASE.md) para variables, migraciones custom y triggers
 
 - Framework: **Vitest** (`vitest.config.mts`: alias `@` → `src/`, entorno
   `node`, cobertura V8 con umbrales).
-- Suite actual: **501 tests en 50 archivos**, todos unitarios/de integración:
+- Suite actual: **535 tests en 55 archivos**, todos unitarios/de integración:
   - `src/lib/**/__tests__/`: módulos puros (money, currency, cursor, ids,
     crypto, recovery, env, validación, caché de balance, sync).
   - `src/server/**/__tests__/`: services contra **DB real** (`file:`
@@ -64,6 +64,43 @@ Ver [`DATABASE.md`](./DATABASE.md) para variables, migraciones custom y triggers
   que prueban; los helpers de dominio compartidos en `__tests__/helpers.ts`
   (p. ej. `createTestDb`). Ver [`DATABASE.md`](./DATABASE.md) para el detalle
   de la DB de test.
+
+### Cobertura (qué se mide y qué no)
+
+- Reporte: `pnpm test:coverage` (V8) → tabla en terminal + HTML en
+  `coverage/` + `coverage-summary.json` (consumido por CI). Los umbrales
+  (80% líneas / 80% funciones / 70% ramas) fallan la corrida si no se
+  alcanzan: son el gate, no una meta informativa.
+- Incluye `src/lib/**` y `src/server/**`; excluye UI (`src/app/**`, sin
+  tests por decisión del owner), el generador `src/db` y las pruebas.
+- Exclusiones justificadas en `vitest.config.mts`:
+  - `src/server/**/actions.ts` y `src/server/auth/recovery-actions.ts`:
+    wrappers delgados de Server Actions ("use server") cuya lógica vive en
+    los services (≥ 90% cubiertos); el glue de request no ejecuta en Vitest.
+  - `src/server/auth/session.ts`: glue de cookies con `next/headers` —
+    `cookies()` lanza fuera del scope de un request (verificado); cada
+    función delega en `resolveSessionUser`/`createSessionRow` (≥ 93%).
+- Cobertura actual: **97.8% líneas / 94.9% ramas / 100% funciones**. Los
+  reintentos ante `SQLITE_BUSY` y las carreras de canje de tokens se cubren
+  simulando la contención con Proxies sobre la DB real (ver
+  `busy-retry.test.ts` y `redeem-races.test.ts`), no con sleeps ni flujos
+  frágiles.
+
+## CI (GitHub Actions)
+
+`.github/workflows/ci.yml` corre en cada push a `main` y en PRs, con dos
+jobs paralelos:
+
+- **quality**: `pnpm lint` + `npx tsc --noEmit` + `pnpm build` (con env de
+  CI dummy: `TURSO_DATABASE_URL=file:./ci.db` y una `ENCRYPTION_KEY` dummy,
+  nunca secretos reales).
+- **test**: `pnpm test:coverage` — los umbrales de Vitest son el gate; si
+  bajan, el job falla. La tabla resumen se publica en el Job Summary
+  (`scripts/coverage-summary.mjs`) y el reporte completo queda como
+  artefacto descargable 7 días.
+
+Los tests no necesitan servicios externos: cada suite levanta su SQLite
+temporal (`file:`), así que CI corre sin DB remota ni secretos.
 
 ## Convenciones de código
 

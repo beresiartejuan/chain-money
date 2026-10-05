@@ -1,5 +1,11 @@
 # Chain Money
 
+<div align="center">
+
+[![CI](https://github.com/beresiartejuan/chain-money/actions/workflows/ci.yml/badge.svg)](https://github.com/beresiartejuan/chain-money/actions/workflows/ci.yml)
+
+</div>
+
 <p align="center">
   <img src="docs/images/box-detail.png" alt="Vista de una alcancía en Chain Money: balance, registro de movimientos, historial inmutable y panel para compartir" width="720" />
 </p>
@@ -47,4 +53,4 @@ Abrir [http://localhost:3000](http://localhost:3000). Para más detalles de conf
 
 ## Estado del proyecto
 
-✅ **Completo** — 96/96 tareas del plan ([tasks/README.md](./tasks/README.md)): 502 tests en 50 archivos, cobertura ≥ 80% en `src/lib` y `src/server`, lint y build en verde.
+✅ **Completo** — 96/96 tareas del plan ([tasks/README.md](./tasks/README.md)): 535 tests en 55 archivos, cobertura ~98% líneas / ~95% ramas / 100% funciones (umbrales: 80/80/70, forzados en CI), lint y build en verde.

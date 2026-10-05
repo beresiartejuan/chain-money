@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Lint + Type-check + Build
+    runs-on: ubuntu-latest
+    env:
+      # `next build` ejecuta la validación de env: en CI basta una URL file:
+      # local y una ENCRYPTION_KEY dummy de 32 bytes en base64 (el valor real
+      # vive solo en los secrets del deploy).
+      TURSO_DATABASE_URL: file:./ci.db
+      # Dummy de CI (32 bytes base64), nunca una key real.
+      ENCRYPTION_KEY: tOI3JKHb4LES4DQXcHFuLkdEXBJgLB6U+RK1Pmu8izA=
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint (Biome)
+        run: pnpm lint
+
+      - name: Type-check (tsc)
+        run: npx tsc --noEmit
+
+      - name: Build (Next.js)
+        run: pnpm build
+
+  test:
+    name: Tests + Coverage
+    runs-on: ubuntu-latest
+    env:
+      # Los tests crean su propia DB SQLite temporal (file:) por suite vía
+      # createTestDb; esta variable solo existe para la validación de env.
+      TURSO_DATABASE_URL: file:./ci-tests.db
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # `vitest run --coverage` falla solo si los umbrales configurados en
+      # vitest.config.mts (80% líneas / 80% funciones / 70% ramas) no se
+      # alcanzan: el gate de calidad es automático.
+      - name: Tests with coverage
+        run: pnpm test:coverage
+
+      - name: Coverage table in job summary
+        if: always()
+        run: node scripts/coverage-summary.mjs
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
