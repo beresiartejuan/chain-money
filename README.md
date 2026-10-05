@@ -1,4 +1,6 @@
-# Chain Money
+<p align="center">
+  <img src="docs/images/hero.png" alt="Chain Money — alcancías compartidas con historial inmutable. Capturas del dashboard y del detalle de una alcancía." />
+</p>
 
 <div align="center">
 
@@ -6,11 +8,7 @@
 
 </div>
 
-<p align="center">
-  <img src="docs/images/box-detail.png" alt="Vista de una alcancía en Chain Money: balance, registro de movimientos, historial inmutable y panel para compartir" width="720" />
-</p>
-
-Aplicación web para registrar los movimientos de dinero de **alcancías compartidas**: cada usuario puede crear hasta 5 alcancías con moneda fija y anotar depósitos y extracciones. Compartir se hace con **tokens de acceso de un solo uso** (con permisos configurables por el dueño). El **historial es inmutable** —nada se edita ni se borra, el reset es un evento más— y el balance se **calcula** desde el historial, sincronizado de forma incremental en el cliente.
+**Chain Money** es una aplicación web para registrar los movimientos de dinero de **alcancías compartidas**: cada usuario puede crear hasta 5 alcancías con moneda fija y anotar depósitos y extracciones. Compartir se hace con **tokens de acceso de un solo uso** (con permisos configurables por el dueño). El **historial es inmutable** —nada se edita ni se borra, el reset es un evento más— y el balance se **calcula** desde el historial, sincronizado de forma incremental en el cliente.
 
 ## Características
 
@@ -20,9 +18,18 @@ Aplicación web para registrar los movimientos de dinero de **alcancías compart
 - 🏦 **Hasta 5 alcancías por usuario**, cada una con moneda fija y UUIDv7.
 - 🛡️ **Sesiones robustas**: cookies httpOnly, rate limiting en login/recuperación/canje, recovery phrase cifrada (AES-256-GCM) en lugar de email.
 
-## Vista general
+## Capturas
 
-![Dashboard de alcancías](docs/images/dashboard.png)
+<table>
+  <tr>
+    <td><img src="docs/images/dashboard.png" alt="Dashboard: lista de alcancías con balance y moneda" /></td>
+    <td><img src="docs/images/box-detail.png" alt="Detalle de una alcancía: balance, nuevo movimiento, historial inmutable y panel para compartir" /></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Dashboard — todas tus alcancías</sub></td>
+    <td align="center"><sub>Detalle — historial inmutable y tokens</sub></td>
+  </tr>
+</table>
 
 ## Stack
 
