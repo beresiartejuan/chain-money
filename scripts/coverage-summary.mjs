@@ -5,10 +5,22 @@
  * Job Summary de GitHub Actions (`$GITHUB_STEP_SUMMARY`). Uso solo en CI;
  * localmente el reporter `text`/`html` ya muestra lo mismo.
  */
-import { appendFileSync, readFileSync } from "node:fs";
+import { appendFileSync, existsSync, readFileSync } from "node:fs";
 
 const summaryPath = "coverage/coverage-summary.json";
 const outPath = process.env.GITHUB_STEP_SUMMARY;
+
+if (!existsSync(summaryPath)) {
+  // Los tests fallaron antes de generar coverage: no enmascarar el fallo,
+  // solo anotarlo en el summary y salir 0 (el job ya falla por los tests).
+  const note = "### Cobertura de tests\n\n_No generada: los tests fallaron._\n";
+  if (outPath) {
+    appendFileSync(outPath, note);
+  } else {
+    console.log(note);
+  }
+  process.exit(0);
+}
 
 const summary = JSON.parse(readFileSync(summaryPath, "utf8"));
 const total = summary.total;

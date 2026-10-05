@@ -34,6 +34,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # `LayoutProps` y otros tipos helper vienen de los .d.ts generados por
+      # Next (`.next/types`); tsc necesita generarlos antes de chequear.
+      - name: Generate Next.js types
+        run: npx next typegen
+
       - name: Lint (Biome)
         run: pnpm lint
 
